@@ -13,7 +13,7 @@ dwm_alsa () {
     printf "%s" "$SEP1"
     if [ "$IDENTIFIER" = "unicode" ]; then
         if [ "${VOL[0]}" -eq 0 ] || [ "${VOL[2]}" == 'off' ]; then
-            printf "🔇"
+            printf "🔇%s%%" "${VOL[0]}"
         elif [ "${VOL[0]}" -gt 0 ] && [ "${VOL[0]}" -le 33 ]; then
             printf "🔈"
         elif [ "${VOL[0]}" -gt 33 ] && [ "${VOL[0]}" -le 66 ]; then
