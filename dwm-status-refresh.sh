@@ -165,6 +165,7 @@ export IDENTIFIER="unicode"
 #. "$DIR/dwmbar-functions/dwm_keyboard.sh"
 #. "$DIR/dwmbar-functions/dwm_ccurse.sh"
 #. "$DIR/dwmbar-functions/dwm_date.sh"
+. "$DIR/dwmbar-functions/dwm_CloudMusic_Song.sh"
 
 get_bytes
 
@@ -172,7 +173,7 @@ get_bytes
 vel_recv=$(get_velocity $received_bytes $old_received_bytes $now)
 vel_trans=$(get_velocity $transmitted_bytes $old_transmitted_bytes $now)
 
-xsetroot -name " $(emoji recv)$vel_recv $(emoji trans)$vel_trans $(dwm_alsa) $(dwm_backlight) $(print_bat) $(dwm_weather) $(show_record) $(print_date) "
+xsetroot -name "$(dwm_CloudMusic_Song) $(emoji recv)$vel_recv $(emoji trans)$vel_trans $(dwm_alsa) $(dwm_backlight) $(print_bat) $(dwm_weather) $(show_record) $(print_date) "
 
 # Update old values to perform new calculations
 old_received_bytes=$received_bytes
