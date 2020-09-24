@@ -15,4 +15,5 @@ fcitx &
 #xfce4-volumed-pulse &
 #/bin/bash ~/scripts/run-mailsync.sh &
 #~/scripts/autostart_wait.sh &
+
 xcompmgr&

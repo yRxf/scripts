@@ -84,6 +84,9 @@ get_time_until_charged() {
 	echo $pretty_time;
 }
 
+get_time_until() {
+  echo $(acpi -b | grep -E 'remaining' | awk '{print $5}');
+}
 get_battery_combined_percent() {
 
 	# get charge of all batteries, combine them
@@ -128,12 +131,18 @@ print_bat(){
 	#if test "$itime" = true;then
 	
 	if $(acpi -b | grep --quiet Discharging);then
-		echo "[ $(emoji nocharge) $(get_battery_combined_percent)%, $(get_time_until_charged ) ]"
+		echo "[ $(emoji nocharge) $(get_battery_combined_percent)%, $(get_time_until ) ]"
+    if [ -f .battery_flag ] && [[ $(cat .battery_flag) == 1 ]] && [[ $(get_battery_combined_percent) -lt 15 ]];then
+        $(sh -c 'st -ie ./battery_tips.sh' > /dev/null 2>&1 &)
+        $(echo 0 > .battery_flag)
+    fi
 	else
 		echo "$(emoji charging) $(get_battery_combined_percent)%"
+    if [ ! -f .battery_flag ] || [[ $(cat .battery_flag) == 0 ]];then
+      $(echo 1 > .battery_flag)
+    fi
 	fi
 }
-
 print_date(){
 	date '+%Y年%m月%d日 %H:%M'
 }
