@@ -90,12 +90,14 @@ get_time_until() {
 get_battery_combined_percent() {
 
 	# get charge of all batteries, combine them
-	total_charge=$(expr $(acpi -b | awk '{print $4}' | grep -Eo "[0-9]+" | paste -sd+ | bc));
+	# total_charge=$(expr $(acpi -b | awk '{print $4}' | grep -Eo "[0-9]+" | paste -sd+ | bc));
+	total_charge=$(expr $(acpi -b | grep "Battery 0" | awk '{print $4}' | grep -Eo "[0-9]+" | paste -sd+ | bc));
 
 	# get amount of batteries in the device
-	battery_number=$(acpi -b | wc -l);
+	# battery_number=$(acpi -b | wc -l);
 
-	percent=$(expr $total_charge / $battery_number);
+	# percent=$(expr $total_charge / $battery_number);
+	percent=$(expr $total_charge);
 
 	echo $percent;
 }
@@ -129,10 +131,10 @@ print_bat(){
 	#echo "$(get_battery_charging_status) $(get_battery_combined_percent)%, $(get_time_until_charged )";
 	#get_battery_charging_status > /dev/null
 	#if test "$itime" = true;then
-	
-	if $(acpi -b | grep --quiet Discharging);then
+  count_list=$(acpi -b | grep Discharging | wc -l)
+	if [[ $count_list == 2 ]];then
 		echo "[ $(emoji nocharge) $(get_battery_combined_percent)%, $(get_time_until ) ]"
-    if [ -f .battery_flag ] && [[ $(cat .battery_flag) == 1 ]] && [[ $(get_battery_combined_percent) -lt 15 ]];then
+    if [ -f .battery_flag ] && [[ $(cat .battery_flag) == 1 ]] && [[ $(get_battery_combined_percent) -lt 0 ]];then
         $(sh -c 'st -ie ./battery_tips.sh' > /dev/null 2>&1 &)
         $(echo 0 > .battery_flag)
     fi
